@@ -47,15 +47,15 @@ module.exports = {
       },
       // css
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
             loader: 'css-loader',
             query: {
-              modules: true,
+              // modules: true,
               sourceMap: !isProduction,
-              importLoaders: 1,
+              // importLoaders: 1,
               localIdentName: isProduction ? '[hash:base64:5]' : '[local]__[hash:base64:5]'
             }
           },
@@ -76,7 +76,10 @@ module.exports = {
                 })
               ]
             }
-          }
+          },
+          {
+            loader: 'sass-loader'
+          },
         ]
       },
       // static assets
@@ -103,6 +106,9 @@ module.exports = {
     runtimeChunk: true
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      TweenMax: ['gsap', 'TweenMax'],
+    }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       DEBUG: false

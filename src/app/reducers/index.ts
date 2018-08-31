@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { RootState } from './state';
 import { todoReducer } from './todos';
 import { routerReducer, RouterState } from 'react-router-redux';
+import Events from 'app/events';
 
 export { RootState, RouterState };
 
@@ -9,5 +10,6 @@ export { RootState, RouterState };
 // doesn't go well with redux@4
 export const rootReducer = combineReducers<RootState>({
   todos: todoReducer as any,
-  router: routerReducer as any
+  router: routerReducer as any,
+  screenSize: Events.Instance.winResizeHandler()
 });

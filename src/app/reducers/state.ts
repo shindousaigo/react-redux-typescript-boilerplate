@@ -4,6 +4,7 @@ import { RouterState } from 'react-router-redux';
 export interface RootState {
   todos: RootState.TodoState;
   router: RouterState;
+  screenSize: string
 }
 
 export namespace RootState {

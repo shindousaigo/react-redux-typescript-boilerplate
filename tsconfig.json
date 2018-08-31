@@ -10,13 +10,14 @@
     "removeComments": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "strict": true,
+    // "strict": true,
     "outDir": "build",
+    "noImplicitAny": false,
     "lib": ["es6", "es7", "dom"],
     "baseUrl": "src",
     "paths": {
       "app/*": ["./app/*"]
     }
   },
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules", "git_component"]
 }
