@@ -136,7 +136,7 @@ window.initialize = function () {
 	var onPasswordFocus = function (e) {
 		coverEyes();
 		e.target.parentElement.classList.add("focusWithText");
-		getCoord();
+		resetFace();
 	}
 
 	var onPasswordBlur = function (e) {

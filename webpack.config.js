@@ -29,7 +29,8 @@ module.exports = {
     // (jsnext:main directs not usually distributable es6 format, but es6 sources)
     mainFields: ['module', 'browser', 'main'],
     alias: {
-      app: path.resolve(__dirname, 'src/app/')
+      app: path.resolve(__dirname, 'src/app/'),
+      '@': path.resolve(__dirname, 'src/node_modules/')
     }
   },
   module: {
@@ -108,6 +109,7 @@ module.exports = {
   plugins: [
     new webpack.ProvidePlugin({
       TweenMax: ['gsap', 'TweenMax'],
+      // jsonp: 'jsonp'
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined

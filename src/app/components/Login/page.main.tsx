@@ -1,22 +1,97 @@
-import './style.base.scss'
+
+export interface LoginProps {
+  states?: any
+  actions?: any
+  appState?: any
+}
+
 
 import * as React from 'react';
 import 'app/components/Login/page.animation';
+import { ViewMode } from 'app/models';
+import * as Actions from 'app/actions';
+import { observer } from 'mobx-react';
+import { intercept } from 'mobx'
 
-export default class LoginPage extends React.Component {
+
+@observer
+export default class LoginPage extends React.Component<LoginProps> {
 
   constructor(props) {
     super(props)
-    
+    this.init()
   }
 
-  componentDidMount() {
-    (window as any).initialize()
+  state = {
+    visibility: 'hidden'
+  }
+
+  init() {
+    intercept(this.props.appState, 'timer', change => {
+      console.log(change)
+      return change
+    })
+    this.initStyles()
+  }
+
+  Styles: { [ViewMode.ELSE]: Promise<any>, [ViewMode.XS]: Promise<any> } & Object = {
+    [ViewMode.ELSE]: import('./style.full.scss'),
+    [ViewMode.XS]: import('./style.portable.scss')
+  }
+
+  Doms: { username: HTMLInputElement, password: HTMLInputElement } & Object
+
+  async initStyles() {
+    await Promise.all([
+      import('./style.base.scss'),
+      this.Styles[this.props.states.widthMode]
+    ])
+    delete this.Styles[this.props.states.widthMode]
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.state.visibility = 'visible'
+        this.setState(this.state)
+      })
+    });
+  }
+
+  initDoms() {
+    this.Doms = {
+      username: document.querySelector('input[name=email]'),
+      password: document.querySelector('input[name=password]')
+    }
+  }
+
+  componentWillReceiveProps(next) {
+    console.log('shindousaigo', next)
+  }
+
+  componentWillUpdate = async (props: LoginProps) => {
+    if (props.states.widthMode && this.Styles.hasOwnProperty(props.states.widthMode)) {
+      this.Styles[props.states.widthMode]
+    }
+    if (props.states.login) {
+      var loginData = await props.states.login
+      console.log(loginData)
+    }
+  }
+
+  componentDidMount = () => {
+    (window as any).initialize();
+    this.initDoms()
+  }
+
+  login = (...args) => {
+    let event: Event = args[0]
+    event.preventDefault()
+    var { username, password } = this.Doms
+    console.log(username.value, password.value)
+    this.props.actions[Actions.Http.Type.USER_LOGIN]()
   }
 
   render() {
-    return <div className="login-main">
-      <form className="login-form">
+    return <div className="login-main" style={{ visibility: this.state.visibility as any }}>
+      <form className="login-form" onSubmit={this.login}>
         <div className="svgContainer">
           <div>
             <svg className="mySVG" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">

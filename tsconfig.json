@@ -3,7 +3,7 @@
     "sourceMap": true,
     "target": "es5",
     "jsx": "react",
-    "module": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "declaration": false,
@@ -14,9 +14,10 @@
     "outDir": "build",
     "noImplicitAny": false,
     "lib": ["es6", "es7", "dom"],
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {
-      "app/*": ["./app/*"]
+      "app/*": ["./src/app/*"],
+      "@/*": ["./node_modules/*"]
     }
   },
   "exclude": ["dist", "build", "node_modules", "git_component"]
